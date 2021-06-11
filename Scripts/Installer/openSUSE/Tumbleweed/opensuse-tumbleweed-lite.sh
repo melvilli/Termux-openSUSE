@@ -28,11 +28,11 @@ if [ "$first" != 1 ];then
 #		wget "http://download.opensuse.org/ports/aarch64/tumbleweed/appliances/openSUSE-Tumbleweed-ARM-JeOS.aarch64-rootfs.aarch64.tar.xz" -O $tarball
 	fi
 	cur=`pwd`
-	mkdir -p "$folder"
 	mkdir -p "$folder/links"
+        export PROOT_L2S_DIR=${cur}/${folder}/links 
 	cd "$folder"
 	echo "Extracting Rootfs, please be patient."
-	proot --link2symlink tar -xJf ${cur}/${tarball} --exclude='dev'||:
+	proot --link2symlink bsdtar -xJf ${cur}/${tarball} --exclude='dev'||:
 	
 	echo "Setting up name server"
 	echo "127.0.0.1 localhost" > etc/hosts
@@ -79,7 +79,7 @@ command+=" HOME=/root"
 command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
 command+=" TERM=\$TERM"
 command+=" LANG=C.UTF-8"
-command+=" /bin/bash --login"
+command+=" /bin/bash --login /root/.proot_startup"
 com="\$@"
 if [ -z "\$1" ];then
     exec \$command
@@ -104,6 +104,6 @@ echo "echo You can now use openSUSE Tumbleweed. To close it type exit and to lau
 clear
 echo "Starting Setup"
 echo "bash ~/setup
-switch-user; exit" > $folder/root/.bash_profile
+switch-user; exit" > $folder/root/.proot_startup
 echo " "
 bash $bin 

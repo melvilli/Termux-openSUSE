@@ -27,8 +27,8 @@ if [ "$first" != 1 ];then
                 wget "http://download.opensuse.org/ports/aarch64/distribution/leap/15.2/appliances/opensuse-leap-image.aarch64-lxc.tar.xz" -O $tarball
 	fi
 	cur=`pwd`
-	mkdir -p "$folder"
 	mkdir -p "$folder/links"
+        export PROOT_L2S_DIR=${cur}/${folder}/links
 	cd "$folder"
 	echo "Extracting Rootfs, please be patient."
 	proot --link2symlink bsdtar -xJf ${cur}/${tarball} --exclude='dev'||:
@@ -87,7 +87,7 @@ command+=" HOME=/root"
 command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
 command+=" TERM=\$TERM"
 command+=" LANG=C.UTF-8"
-command+=" /bin/bash --login"
+command+=" /bin/bash --login /root/.proot_startup"
 com="\$@"
 if [ -z "\$1" ];then
     exec \$command
@@ -112,6 +112,6 @@ echo "echo You can now use openSUSE Leap. To close it type exit and to launch it
 clear
 echo "Starting Setup"
 echo "bash ~/setup
-switch-user; " > $folder/root/.bash_profile
+switch-user; " > $folder/root/.proot_startup
 echo " "
 bash $bin 

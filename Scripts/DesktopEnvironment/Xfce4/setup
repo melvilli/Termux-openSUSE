@@ -3,7 +3,7 @@ clear
 echo "Welcome to openSUSE Setup"
 echo " "
 echo " "
-zypper rm -y kernel-firmware* > /dev/null 2>&1 
+#zypper rm -y kernel-firmware* > /dev/null 2>&1 
 zypper al kernel* permissions* > /dev/null 2>&1 
 echo "Installing Xfce4 DE, please wait" 
 echo " "
@@ -50,7 +50,7 @@ wget -q https://raw.githubusercontent.com/radumamy/Termux-openSUSE/master/Script
 bash ~/vnc-server.sh 
 zypper cc -a > /dev/null 2>&1 
 cp -r /root/.vnc /home/$uservar/
-sed -i '1d' ~/.bash_profile
+sed -i '1d' ~/.proot_startup 
 echo "exec su - $uservar" >> /usr/local/bin/switch-user
 chmod +x /usr/local/bin/switch-user 
 rm -f ~/vnc-server.sh setup 
